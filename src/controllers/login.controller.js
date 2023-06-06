@@ -1,6 +1,7 @@
 const usersModel = require('../models/users.model')
 const userloginsModel = require('../models/userlogins.model')
 const usersUtil = require('../utils/users.util')
+const booruUtil = require('../utils/szurubooru.util')
 const ipbansModel = require('../models/ipbans.model')
 const argon2 = require('argon2')
 
@@ -147,6 +148,11 @@ module.exports.postLogin = async ctx => {
 
                         // Create login record
                         await userloginsModel.createLogin(user.id, ctx.ip)
+
+                        const req = await booruUtil.req(`/user-token/${username}`, {'enabled': true, 'note': 'Site Token'}, `${username}:${password}`)
+                        if (req.token) {
+                            ctx.cookies.set('auth', JSON.stringify({"user": req.user.name, "token": req.token}), {httpOnly: false});
+                        }
 
                         // Redirect to next
                         ctx.state.noRender = true

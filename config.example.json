@@ -47,5 +47,9 @@
         "migrations": {
             "tableName": "knex_migrations"
         }
+    },
+    "szurubooru": {
+        "apiUrl": "http://127.0.0.1:8001/api",
+        "token": "username:00000000-aaaa-bbbb-cccc-999999999999"
     }
 }
